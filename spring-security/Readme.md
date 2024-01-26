@@ -1,0 +1,3 @@
+- [Spring security property](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.security)
+- NoOpPasswordEncoder: My passwords are still in plain text passwords, so please treat them as plain text and do authentication.
+- 
