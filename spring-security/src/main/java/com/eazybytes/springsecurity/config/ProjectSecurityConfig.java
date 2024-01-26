@@ -1,5 +1,8 @@
 package com.eazybytes.springsecurity.config;
 
+import com.eazybytes.springsecurity.filter.AuthoritiesLoggingAfterFilter;
+import com.eazybytes.springsecurity.filter.AuthoritiesLoggingAtFilter;
+import com.eazybytes.springsecurity.filter.AuthoritiesLoggingBeforeFilter;
 import com.eazybytes.springsecurity.filter.CsrfCookieFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -49,6 +52,9 @@ public class ProjectSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/contact", "/register")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .addFilterBefore(new AuthoritiesLoggingBeforeFilter(),BasicAuthenticationFilter.class)
+                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(new SecurityCorsConfiguration()))
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
